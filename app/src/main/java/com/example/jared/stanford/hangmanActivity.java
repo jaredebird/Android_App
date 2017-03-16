@@ -6,26 +6,40 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.app.Activity;
+import android.view.Window;
+import android.view.WindowManager;
+import android.content.Intent;
 
-public class hangmanActivity extends SurfaceView implements Runnable{
-    private boolean touched = false;
-    private float eventX;
-
-public hangmanActivity(Context context){
-    super(context);
-
-}
-    public void run(){
+public class hangmanActivity extends Activity {
+private hangmanView hangmanView;
+    public hangmanActivity(){
 
     }
-
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN
-                || event.getAction() == MotionEvent.ACTION_MOVE) {
-            eventX = event.getX();
-            touched = true;
-        }
-        return touched;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        // initialize graphics and game thread
+        hangmanView = new hangmanView(this);
+        setContentView(hangmanView);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //hangmanView.pause();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        hangmanView.resume();
+    }
+    public hangmanActivity(Context context) {
+
+
     }
 }
